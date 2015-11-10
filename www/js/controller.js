@@ -1,7 +1,10 @@
-appContext.controller("HomeController", function(HomeService, $scope,$interval,$ionicLoading, $cordovaMedia) {
+appContext.controller("HomeController", function(HomeService, $scope,$interval,$ionicLoading, $cordovaMedia, $ionicPlatform) {
+
+$ionicPlatform.ready(function() {
+       $interval(callAtInterval, 6000);
+   });
 
 
-  $interval(callAtInterval, 200);
 
     /**
      * $interval payload
@@ -19,7 +22,8 @@ appContext.controller("HomeController", function(HomeService, $scope,$interval,$
               $scope.bgColor = bgcolor;
               $scope.text = text;
               $scope.textcolor = textcolor;
-              $scope.imgSrc = image;
+              //$scope.imgSrc = image;
+              console.log();
               if( image == "" )
                 $scope.show = false;
               /*
@@ -29,9 +33,6 @@ appContext.controller("HomeController", function(HomeService, $scope,$interval,$
                 }else if("image"== response[0]) {
                 */
                 if(image != ''){
-                  $ionicLoading.show({
-                    template: 'Loading...'
-                  });
 
                   HomeService.fileExist(image,function(fileName){
                     if ("404" == fileName) {
@@ -44,24 +45,23 @@ appContext.controller("HomeController", function(HomeService, $scope,$interval,$
                       $scope.imgSrc = fileName+"?"+new Date().getTime();
                       $scope.show = true;
                     }
-
                   });
-                  $ionicLoading.hide();
                 }
 
                 if(sound != ''){
-                  $ionicLoading.show({
-                    template: 'Loading...'
-                  });
 
                   HomeService.fileExist(sound,function(fileName){
                     if ("404" == fileName) {
                       HomeService.downloadImg( sound, "http://ec2-52-33-124-74.us-west-2.compute.amazonaws.com/BRbackoffice/symfony/web/uploads/"+sound, function(imgURL){
                         //$scope.imgSrc = imgURL+"?"+new Date().getTime();
                         //$scope.show = true;
-                        console.log("SRCCC " + src);
+
                         var src = imgURL;
-                        var media = $cordovaMedia.newMedia(src);
+                        var media = $cordovaMedia.newMedia(src, null, null, function(){
+                          //media.play(options); // iOS only!
+                          console.log("media.play()");
+                          media.play(); // Android
+                        });
 
                         //media.play(options); // iOS only!
                         media.play(); // Android
@@ -71,12 +71,20 @@ appContext.controller("HomeController", function(HomeService, $scope,$interval,$
                       });
                     } else {
                       console.log("------sound found------- : "+fileName);
-                      $scope.imgSrc = fileName+"?"+new Date().getTime();
-                      $scope.show = true;
+                      console.log("dddddd");
+                      //var src = "img/sounds-986-nice-cut.mp3";
+                      var media = $cordovaMedia.newMedia(fileName);
+                      var iOSPlayOptions = {
+                        numberOfLoops: 2,
+                        playAudioWhenScreenIsLocked : false
+                      }
+
+                      //media.play(options); // iOS only!
+                      media.play(); // Android
+                      console.log("ffffff");
                     }
 
                   });
-                  $ionicLoading.hide();
                 }
 
             })
@@ -86,4 +94,4 @@ appContext.controller("HomeController", function(HomeService, $scope,$interval,$
                 console.log("/*******************/");
             });
     }
-})
+});

@@ -45,7 +45,7 @@ appContext.factory("HomeService", function($http,$cordovaFile,$cordovaFileTransf
 
                 });
         }else{
-          console.warn("desktop env");
+          callBack("img/ionic.png");
         }
 
     };
