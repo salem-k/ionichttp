@@ -1,7 +1,8 @@
 appContext.factory("HomeService", function($http,$cordovaFile,$cordovaFileTransfer) {
+
     var getOperation = function() {
         var request = {
-            url: "http://ec2-52-32-10-107.us-west-2.compute.amazonaws.com/back/server/operation.txt",
+            url: "http://ec2-52-33-124-74.us-west-2.compute.amazonaws.com/BRbackoffice/symfony/web/operation/operation.txt?tmp="+ (new Date().getTime()),
             method: "GET",
             cache: false,
             transformResponse: function(data) {
@@ -11,7 +12,6 @@ appContext.factory("HomeService", function($http,$cordovaFile,$cordovaFileTransf
             },
             timeout: 1000,
         }
-
         return $http(request);
     };
 
