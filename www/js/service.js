@@ -1,8 +1,8 @@
-appContext.factory("HomeService", function($http,$cordovaFile,$cordovaFileTransfer) {
+appContext.factory("HomeService", function($http, $cordovaFile, $cordovaFileTransfer) {
 
     var getOperation = function() {
         var request = {
-            url: "http://192.168.1.105/batelierBackOffice/web/operation.txt?tmp="+ (new Date().getTime()),
+            url: "http://192.168.1.105/BRbackoffice/web/operation/operation.txt?tmp="+ (new Date().getTime()),
             method: "GET",
             cache: false,
             transformResponse: function(data) {
@@ -73,25 +73,18 @@ appContext.factory("HomeService", function($http,$cordovaFile,$cordovaFileTransf
                     var options = {};
                     $cordovaFileTransfer.download(url, targetPath, options, trustHosts)
                         .then(function(result) {
+                          console.error(JSON.stringify(url));
+                          console.error(JSON.stringify(targetPath));
+                          console.error(JSON.stringify(options));
+                          console.error(JSON.stringify(trustHosts));
                             //successs
                             window.localStorage.removeItem('encours ' + fileName);
                             callBack(result.nativeURL);
                         }, function(err) {
+                          console.error(JSON.stringify(err));
                             console.log('erreur download ' + err.message);
                             // Error
-                            console.log('path ' + path);
-                            console.log('fileName ' + fileName);
-                            $cordovaFile.removeFile(path, fileName)
-                                .then(function(success) {
-                                    window.localStorage.removeItem('encours' + fileName);
-
-                                    callBack("404");
-                                }, function(error) {
-                                    // error
-                                    window.localStorage.removeItem('encours' + fileName);
-                                    console.log('erreur remove');
-                                    callBack("404");
-                                });
+                            callBack("404");
 
                         }, function(progress) {
 

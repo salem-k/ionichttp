@@ -54,7 +54,7 @@ $ionicPlatform.ready(function() {
 
                   HomeService.fileExist(image,function(fileName){
                     if ("404" == fileName) {
-                      HomeService.downloadImg( image, "http://192.168.1.105/batelierBackOffice/web/"+image, function(imgURL){
+                      HomeService.downloadImg( image, "http://192.168.1.105/BRbackoffice/web/uploads/"+image, function(imgURL){
                         $scope.imgSrc = imgURL+"?"+new Date().getTime();
                         $scope.show = true;
                       });
@@ -70,9 +70,9 @@ $ionicPlatform.ready(function() {
 
                   HomeService.fileExist(sound,function(fileName){
                     if ("404" == fileName) {
-                      HomeService.downloadImg( sound, "http://192.168.1.105/batelierBackOffice/web/"+sound, function(mp3URL){
+                      HomeService.downloadImg( sound, "http://192.168.1.105/BRbackoffice/web/uploads/"+sound, function(mp3URL){
 
-                        var media = new Media(getMediaURL(mp3URL), null, null, mediaStatusCallback);
+                        var media = new Media(mp3URL, null, null, mediaStatusCallback);
 
                         var iOSPlayOptions = {
                           numberOfLoops: 2,
