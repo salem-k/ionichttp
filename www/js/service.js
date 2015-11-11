@@ -2,7 +2,7 @@ appContext.factory("HomeService", function($http,$cordovaFile,$cordovaFileTransf
 
     var getOperation = function() {
         var request = {
-            url: "http://ec2-52-33-124-74.us-west-2.compute.amazonaws.com/BRbackoffice/symfony/web/operation/operation.txt?tmp="+ (new Date().getTime()),
+            url: "http://192.168.1.105/batelierBackOffice/web/operation.txt?tmp="+ (new Date().getTime()),
             method: "GET",
             cache: false,
             transformResponse: function(data) {
@@ -74,13 +74,13 @@ appContext.factory("HomeService", function($http,$cordovaFile,$cordovaFileTransf
                     $cordovaFileTransfer.download(url, targetPath, options, trustHosts)
                         .then(function(result) {
                             //successs
-                            window.localStorage.removeItem('encours' + fileName);
+                            window.localStorage.removeItem('encours ' + fileName);
                             callBack(result.nativeURL);
                         }, function(err) {
-                            console.log('erreur download' + err.message);
+                            console.log('erreur download ' + err.message);
                             // Error
-                            console.log('path' + path);
-                            console.log('fileName' + fileName);
+                            console.log('path ' + path);
+                            console.log('fileName ' + fileName);
                             $cordovaFile.removeFile(path, fileName)
                                 .then(function(success) {
                                     window.localStorage.removeItem('encours' + fileName);

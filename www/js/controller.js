@@ -1,7 +1,25 @@
-appContext.controller("HomeController", function(HomeService, $scope,$interval,$ionicLoading, $cordovaMedia, $ionicPlatform) {
+appContext.controller("HomeController", function(HomeService, $scope,$interval,$ionicLoading, $cordovaMedia, $ionicPlatform, $timeout) {
 
 $ionicPlatform.ready(function() {
-       $interval(callAtInterval, 6000);
+
+      $interval(callAtInterval, 6000);
+
+      /*
+       var mediaStatusCallback = function(status) {
+           if(status == 1) {
+               $ionicLoading.show({template: 'Loading...'});
+           } else {
+               $ionicLoading.hide();
+           }
+       }
+
+       function getMediaURL(s) {
+           var isAndroid = ionic.Platform.isAndroid();
+           if(isAndroid) return "/android_asset/www/" + s;
+           return s;
+        }
+        */
+
    });
 
 
@@ -36,7 +54,7 @@ $ionicPlatform.ready(function() {
 
                   HomeService.fileExist(image,function(fileName){
                     if ("404" == fileName) {
-                      HomeService.downloadImg( image, "http://ec2-52-33-124-74.us-west-2.compute.amazonaws.com/BRbackoffice/symfony/web/uploads/"+image, function(imgURL){
+                      HomeService.downloadImg( image, "http://192.168.1.105/batelierBackOffice/web/"+image, function(imgURL){
                         $scope.imgSrc = imgURL+"?"+new Date().getTime();
                         $scope.show = true;
                       });
@@ -52,36 +70,34 @@ $ionicPlatform.ready(function() {
 
                   HomeService.fileExist(sound,function(fileName){
                     if ("404" == fileName) {
-                      HomeService.downloadImg( sound, "http://ec2-52-33-124-74.us-west-2.compute.amazonaws.com/BRbackoffice/symfony/web/uploads/"+sound, function(imgURL){
-                        //$scope.imgSrc = imgURL+"?"+new Date().getTime();
-                        //$scope.show = true;
+                      HomeService.downloadImg( sound, "http://192.168.1.105/batelierBackOffice/web/"+sound, function(mp3URL){
 
-                        var src = imgURL;
-                        var media = $cordovaMedia.newMedia(src, null, null, function(){
-                          //media.play(options); // iOS only!
-                          console.log("media.play()");
-                          media.play(); // Android
-                        });
+                        var media = new Media(getMediaURL(mp3URL), null, null, mediaStatusCallback);
 
-                        //media.play(options); // iOS only!
-                        media.play(); // Android
+                        var iOSPlayOptions = {
+                          numberOfLoops: 2,
+                          playAudioWhenScreenIsLocked : false
+                        }
+                        if(ionic.Platform.isIOS())
+                        media.play(iOSPlayOptions);
+                        else
+                        media.play();
 
-//                        media.setVolume(0.5);
 
                       });
                     } else {
                       console.log("------sound found------- : "+fileName);
-                      console.log("dddddd");
-                      //var src = "img/sounds-986-nice-cut.mp3";
-                      var media = $cordovaMedia.newMedia(fileName);
+
+                      var media = new Media(fileName, null, null, mediaStatusCallback);
+
                       var iOSPlayOptions = {
                         numberOfLoops: 2,
                         playAudioWhenScreenIsLocked : false
                       }
-
-                      //media.play(options); // iOS only!
-                      media.play(); // Android
-                      console.log("ffffff");
+                      if(ionic.Platform.isIOS())
+                      media.play(iOSPlayOptions);
+                      else
+                      media.play();
                     }
 
                   });
@@ -94,4 +110,18 @@ $ionicPlatform.ready(function() {
                 console.log("/*******************/");
             });
     }
+
+    function getMediaURL(s) {
+        var isAndroid = ionic.Platform.isAndroid();
+        if(isAndroid) return "/android_asset/www/" + s;
+        return s;
+     }
+
+     var mediaStatusCallback = function(status) {
+         if(status == 1) {
+             $ionicLoading.show({template: 'Loading...'});
+         } else {
+             $ionicLoading.hide();
+         }
+     }
 });
