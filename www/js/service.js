@@ -2,7 +2,7 @@ appContext.factory("HomeService", function($http, $cordovaFile, $cordovaFileTran
 
     var getOperation = function() {
         var request = {
-            url: "http://192.168.1.105/BRbackoffice/web/operation/operation.txt?tmp="+ (new Date().getTime()),
+            url: "http://ec2-52-25-133-148.us-west-2.compute.amazonaws.com/BRbackoffice/web/operation/operation.txt?tmp="+ (new Date().getTime()),
             method: "GET",
             cache: false,
             transformResponse: function(data) {
@@ -73,10 +73,6 @@ appContext.factory("HomeService", function($http, $cordovaFile, $cordovaFileTran
                     var options = {};
                     $cordovaFileTransfer.download(url, targetPath, options, trustHosts)
                         .then(function(result) {
-                          console.error(JSON.stringify(url));
-                          console.error(JSON.stringify(targetPath));
-                          console.error(JSON.stringify(options));
-                          console.error(JSON.stringify(trustHosts));
                             //successs
                             window.localStorage.removeItem('encours ' + fileName);
                             callBack(result.nativeURL);

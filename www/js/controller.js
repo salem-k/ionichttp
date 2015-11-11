@@ -44,17 +44,12 @@ $ionicPlatform.ready(function() {
               console.log();
               if( image == "" )
                 $scope.show = false;
-              /*
-                if("color" == response[0]){
-                  $scope.bgColor = "#"+response[1];
-                  $scope.show = false;
-                }else if("image"== response[0]) {
-                */
+
                 if(image != ''){
 
                   HomeService.fileExist(image,function(fileName){
                     if ("404" == fileName) {
-                      HomeService.downloadImg( image, "http://192.168.1.105/BRbackoffice/web/uploads/"+image, function(imgURL){
+                      HomeService.downloadImg( image, "http://ec2-52-25-133-148.us-west-2.compute.amazonaws.com/BRbackoffice/web/uploads/"+image, function(imgURL){
                         $scope.imgSrc = imgURL+"?"+new Date().getTime();
                         $scope.show = true;
                       });
@@ -70,8 +65,11 @@ $ionicPlatform.ready(function() {
 
                   HomeService.fileExist(sound,function(fileName){
                     if ("404" == fileName) {
-                      HomeService.downloadImg( sound, "http://192.168.1.105/BRbackoffice/web/uploads/"+sound, function(mp3URL){
+                      HomeService.downloadImg( sound, "http://ec2-52-25-133-148.us-west-2.compute.amazonaws.com/BRbackoffice/web/uploads/"+sound, function(mp3URL){
 
+                          console.log("------sound not found------- : " + fileName);
+                          console.log("------sound not found+++++++ : " + sound);
+                          console.log("------          mp3  ******* : " + mp3URL);
                         var media = new Media(mp3URL, null, null, mediaStatusCallback);
 
                         var iOSPlayOptions = {
