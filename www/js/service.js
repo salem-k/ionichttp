@@ -2,7 +2,8 @@ appContext.factory("HomeService", function($http, $cordovaFile, $cordovaFileTran
 
     var getOperation = function() {
         var request = {
-            url: "http://ec2-52-33-106-148.us-west-2.compute.amazonaws.com/BRbackoffice/web/operation/operation.txt?tmp="+ (new Date().getTime()),
+          //  url: "http://ec2-52-33-106-148.us-west-2.compute.amazonaws.com/BRbackoffice/web/operation/operation.txt?tmp="+ (new Date().getTime()), //prod
+            url: "http://ec2-52-25-133-148.us-west-2.compute.amazonaws.com/BRbackoffice/web/operation/operation.txt?tmp="+ (new Date().getTime()), //dev
             method: "GET",
             cache: false,
             transformResponse: function(data) {
@@ -14,7 +15,6 @@ appContext.factory("HomeService", function($http, $cordovaFile, $cordovaFileTran
         }
         return $http(request);
     };
-
 
     /**
      * check if file exist
@@ -98,10 +98,38 @@ appContext.factory("HomeService", function($http, $cordovaFile, $cordovaFileTran
         }
     };
 
+
+
     return {
         getOperation: getOperation,
         fileExist: fileExist,
         downloadImg : downloadImg,
+
     }
 
-})
+}).factory("RunService",function($http){
+  var register = function(deviceId, deviceToken){
+    registerRequest = {
+        url : " http://ec2-52-25-133-148.us-west-2.compute.amazonaws.com/BRbackoffice/web/app_dev.php/register/create",
+        method : "POST",
+        data : {
+          deviceId : deviceId,
+          deviceToken : deviceToken
+        },
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        transformRequest: function(obj) {
+          var str = [];
+          for ( var p in obj)
+            str.push(encodeURIComponent(p) + "="
+                    + encodeURIComponent(obj[p]));
+          return str.join("&");
+        },
+    };
+    return $http(registerRequest);
+  };
+  return {
+      register : register,
+  }
+});

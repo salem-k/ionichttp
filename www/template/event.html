@@ -1,0 +1,11 @@
+<ion-view  ng-controller="EventController" ng-style="{'background-color':bgColor }">
+  <ion-content>
+  <!--   <button ng-click="play()" class="button">click </button>  -->
+   <img style="height:100%;width:100%;" ng-if="show" ng-src="{{ imgSrc }}" />
+    <p  ng-style="{'color':textcolor }">
+      {{text}}
+    </p>
+    <label style="display:none">{{soundPlaying}}</label>
+
+  </ion-content>
+</ion-view>

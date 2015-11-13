@@ -1,1 +1,39 @@
 /* Empty. Add your own CSS if you like */
+/* Empty. Add your own CSS if you like */
+.imgHeader{
+  margin-right:auto;
+	margin-left:auto;
+  display: block;
+}
+.header{
+  margin-right:auto;
+  margin-left:auto;
+  display: block;
+  background-color: #DDD;
+}
+.footer{
+  height: 75px;
+  display: block;
+  background-color: #DDD;
+}
+.btnFooter{
+  height: 65px;
+  display: block;
+  font-size: 2em !important;
+  padding-bottom: 10px;
+}
+.ionView{
+  background-color: #DDD;
+  padding-top:50%;
+}
+p{
+font-size: 5em;
+text-align: center;
+vertical-align: bottom;
+margin-top: 3em !important;
+margin-bottom: 50% !important;
+line-height: 1em;
+color: rgb(255, 255, 255);
+height: 100% !important;
+
+}

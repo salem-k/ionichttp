@@ -4,10 +4,8 @@ appContext.controller("HomeController", function(HomeService, $scope, $interval,
   var imgDisplaying ;
 $ionicPlatform.ready(function() {
 
-      $interval(callAtInterval, 500);
+      $interval(callAtInterval, 2000);
    });
-
-
 
     /**
      * $interval payload
@@ -26,11 +24,12 @@ $ionicPlatform.ready(function() {
               $scope.text = text;
               $scope.textcolor = textcolor;
               //$scope.imgSrc = image;
-              console.log();
+              console.log(text);
+              console.log("text");
               if( image == "" )
                 $scope.show = false;
 
-                if(image != ''){
+                if(image != '' && text ==""){
 
                   HomeService.fileExist(image,function(fileName){
                     if ("404" == fileName) {

@@ -29,7 +29,8 @@
     "cordova-plugin-whitelist@1.0.0",
     "cordova-plugin-statusbar@1.0.1",
     "com.ionic.keyboard@1.0.4",
-    "org.apache.cordova.media"
+    "org.apache.cordova.media",
+    "phonegap-plugin-push"
   ],
   "cordovaPlatforms": [
     "android"
