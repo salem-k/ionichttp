@@ -1,25 +1,10 @@
-appContext.controller("HomeController", function(HomeService, $scope,$interval,$ionicLoading, $cordovaMedia, $ionicPlatform, $timeout) {
+appContext.controller("HomeController", function(HomeService, $scope, $interval, $ionicLoading, $cordovaMedia, $ionicPlatform, $timeout) {
 
+  var soundPlaying ;
+  var imgDisplaying ;
 $ionicPlatform.ready(function() {
 
-      $interval(callAtInterval, 6000);
-
-      /*
-       var mediaStatusCallback = function(status) {
-           if(status == 1) {
-               $ionicLoading.show({template: 'Loading...'});
-           } else {
-               $ionicLoading.hide();
-           }
-       }
-
-       function getMediaURL(s) {
-           var isAndroid = ionic.Platform.isAndroid();
-           if(isAndroid) return "/android_asset/www/" + s;
-           return s;
-        }
-        */
-
+      $interval(callAtInterval, 500);
    });
 
 
@@ -49,14 +34,23 @@ $ionicPlatform.ready(function() {
 
                   HomeService.fileExist(image,function(fileName){
                     if ("404" == fileName) {
-                      HomeService.downloadImg( image, "http://ec2-52-25-133-148.us-west-2.compute.amazonaws.com/BRbackoffice/web/uploads/"+image, function(imgURL){
-                        $scope.imgSrc = imgURL+"?"+new Date().getTime();
-                        $scope.show = true;
+                      HomeService.downloadImg( image, "http://ec2-52-33-106-148.us-west-2.compute.amazonaws.com/BRbackoffice/web/uploads/"+image, function(imgURL){
+                        if (imgDisplaying != imgURL) {
+                          $scope.imgSrc = imgURL+"?"+new Date().getTime();
+                          $scope.show = true;
+                          console.log("-*-*-*-*-**---*");
+                        }
+
+                          imgDisplaying = imgURL;
                       });
                     } else {
                       console.log("------image found------- : "+fileName);
-                      $scope.imgSrc = fileName+"?"+new Date().getTime();
-                      $scope.show = true;
+                      if (imgDisplaying != imgURL) {
+                        $scope.imgSrc = fileName+"?"+new Date().getTime();
+                        $scope.show = true;
+                        console.log("-------****--------");
+                      }
+                      imgDisplaying = imgURL;
                     }
                   });
                 }
@@ -65,26 +59,25 @@ $ionicPlatform.ready(function() {
 
                   HomeService.fileExist(sound,function(fileName){
                     if ("404" == fileName) {
-                      HomeService.downloadImg( sound, "http://ec2-52-25-133-148.us-west-2.compute.amazonaws.com/BRbackoffice/web/uploads/"+sound, function(mp3URL){
+                      HomeService.downloadImg( sound, "http://ec2-52-33-106-148.us-west-2.compute.amazonaws.com/BRbackoffice/web/uploads/"+sound, function(mp3URL){
 
-                          console.log("------sound not found------- : " + fileName);
-                          console.log("------sound not found+++++++ : " + sound);
-                          console.log("------          mp3  ******* : " + mp3URL);
                         var media = new Media(mp3URL, null, null, mediaStatusCallback);
 
                         var iOSPlayOptions = {
                           numberOfLoops: 2,
                           playAudioWhenScreenIsLocked : false
                         }
-                        if(ionic.Platform.isIOS())
-                        media.play(iOSPlayOptions);
-                        else
-                        media.play();
+                        if(ionic.Platform.isIOS() &&  soundPlaying != mp3URL ) {
+                            media.play(iOSPlayOptions);
 
-
+                        }
+                        else if(soundPlaying != mp3URL ){
+                            media.play();
+                            console.log("not found after play "+soundPlaying);
+                        }
+                          soundPlaying = mp3URL;
                       });
                     } else {
-                      console.log("------sound found------- : "+fileName);
 
                       var media = new Media(fileName, null, null, mediaStatusCallback);
 
@@ -92,10 +85,16 @@ $ionicPlatform.ready(function() {
                         numberOfLoops: 2,
                         playAudioWhenScreenIsLocked : false
                       }
-                      if(ionic.Platform.isIOS())
-                      media.play(iOSPlayOptions);
-                      else
-                      media.play();
+
+                      if(ionic.Platform.isIOS() &&  soundPlaying != fileName ) {
+                          media.play(iOSPlayOptions);
+                          soundPlaying = fileName;
+                      }
+                      else if(soundPlaying != fileName ){
+                          media.play();
+                          soundPlaying = fileName;
+                          console.log(" found after play "+soundPlaying);
+                      }
                     }
 
                   });
